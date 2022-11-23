@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equality Act Change Live Petition</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script>
+        function timeSince(date) {
+            var seconds = Math.floor((new Date() - date) / 1000);
+
+            var interval = seconds / 31536000;
+            if (interval > 1) {
+                return Math.floor(interval) + "y";
+            }
+
+            interval = seconds / 2592000;
+            if (interval > 1) {
+                return Math.floor(interval) + "mo";
+            }
+
+            interval = seconds / 86400;
+            if (interval > 1) {
+                return Math.floor(interval) + "d";
+            }
+
+            interval = seconds / 3600;
+            if (interval > 1) {
+                return Math.floor(interval) + "h";
+            }
+
+            interval = seconds / 60;
+            if (interval > 1) {
+                return Math.floor(interval) + "m";
+            }
+
+            return Math.floor(seconds) + "s";
+        } // timeSince from https://stackoverflow.com/a/3177838/19348056
+
+        function updateAll() {
+            try {
+                $.getJSON("https://petition.parliament.uk/petitions/623243.json", {_:(new Date()).getTime()}, function(data) {
+                    let sigCount = data["data"]["attributes"]["signature_count"];
+                    let lastSignedAt = (new Date(data["data"]["attributes"]["updated_at"]));
+                    let createdAt = (new Date(data["data"]["attributes"]["created_at"]));
+
+                    let secondsSinceCreation = Math.floor((new Date() - createdAt) / 1000);
+                    let hoursSinceCreation = secondsSinceCreation / 3600;
+
+                    let signaturesPerHour = Math.round(sigCount / hoursSinceCreation);
+
+                    let govResponseAt = (new Date(data["data"]["attributes"]["government_response_at"]));
+                    let govResponded = data["data"]["attributes"]["government_response_at"];
+
+                    $("#forSignatures").text(data["data"]["attributes"]["signature_count"].toLocaleString());
+                    $("#forLastSigned").text(timeSince(lastSignedAt) + " ago");
+                    $("#forSignPerHour").text(signaturesPerHour + " p/h");
+                    if (govResponded) {
+                        $("#forGovResponse").text(timeSince(govResponseAt) + " ago");
+                        $("#forGovResponse").css("color", "#008800");
+                    }
+                    else {
+                        $("#forGovResponse").text("NO");
+                        $("#forGovResponse").css("color", "#880000");
+                    }
+                })
+            }
+            catch {}
+
+            try {
+                $.getJSON("https://petition.parliament.uk/petitions/627984.json", {_:(new Date()).getTime()}, function(data) {
+                    let sigCount = data["data"]["attributes"]["signature_count"];
+                    let lastSignedAt = (new Date(data["data"]["attributes"]["updated_at"]));
+                    let createdAt = (new Date(data["data"]["attributes"]["created_at"]));
+
+                    let secondsSinceCreation = Math.floor((new Date() - createdAt) / 1000);
+                    let hoursSinceCreation = secondsSinceCreation / 3600;
+
+                    let signaturesPerHour = Math.round(sigCount / hoursSinceCreation);
+
+                    let govResponseAt = (new Date(data["data"]["attributes"]["government_response_at"]));
+                    let govResponded = data["data"]["attributes"]["government_response_at"];
+
+                    $("#againstSignatures").text(data["data"]["attributes"]["signature_count"].toLocaleString());
+                    $("#againstLastSigned").text(timeSince(lastSignedAt) + " ago");
+                    $("#againstSignPerHour").text(signaturesPerHour + " p/h");
+                    if (govResponded) {
+                        $("#againstGovResponse").text(timeSince(govResponseAt) + " ago");
+                        $("#againstGovResponse").css("color", "#008800");
+                    }
+                    else {
+                        $("#againstGovResponse").text("NO");
+                        $("#againstGovResponse").css("color", "#880000");
+                    }
+                })
+            }
+            catch {}
+        }
+
+        setInterval(updateAll, 10000);
+        updateAll();
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#what").click(function() {
+            $("#what .content").toggle();
+        });
+        })
+    </script>
+    <style>
+        body {
+            /* padding: 1%; */
+            margin: 1%;
+            background-color: #1d1a1c;
+            /* overflow-wrap:break-word  */
+        }
+        span, div, p {
+            color: white;
+        }
+        * {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+        table {
+            background-color: white;
+            border: 2px solid #008800;
+            border-collapse: collapse;
+            width: 100%;
+            text-align: left;
+            box-shadow: 0px 0px 4px #2f9c2f;
+        }
+        tr:nth-child(even) {
+            background-color: rgb(0,0,0,0.25);
+        }
+        th, td {
+            padding: 10px;
+            color: black
+        }
+        th {
+            border: 2px solid #006600;
+            background-color: #008800;
+            color: white;
+        }
+        td {
+            border: 2px solid #777777;
+        }
+        th {
+            text-shadow: 0px 0px 4px black;
+            font-weight: bolder;
+        }
+        td:first-child {
+            background-color: #2f9c2f;
+            color: white;
+            text-shadow: 0px 0px 4px black;
+            font-weight: bold;
+            border: 2px solid #006600;
+        }
+        tr:nth-child(even) td:first-child {
+            background-color: #228022;
+        }
+        .head {
+            display: block;
+            text-align: center;
+            font-size: x-large;
+            text-decoration: underline 2px;
+            text-shadow: 0px 0px 3px #ffffff66;
+        }
+        #what {
+            /* background-color: red; */
+            margin: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            width: 500px;
+            box-shadow: 0px 0px 6px #ffffff66;
+        }
+        #what .title {
+            background-color: #141314;
+            /* margin: 20px; */
+            padding: 20px;
+            font-size: larger;
+            text-decoration: underline 2px;
+        }
+        #what .content {
+            display: none;
+            /* margin: 20px; */
+            padding: 20px;
+            background-color: #2e2c2d;
+            /* flex-grow: 1; */
+            font-size: medium
+        }
+        #showwhat {
+            user-select: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <span class="head">
+        Live Stats on the attempt to change the Equality Act
+    </span>
+    <br>
+    <div style="overflow-x: auto">
+        <table>
+            <tr>
+                <th>Type</th>
+                <th>Signs</th>
+                <th>Last Sign</th>
+                <th>Sign p/h (avg)</th>
+                <th>Gov Responded</th>
+            </tr>
+    
+            <tr>
+                <td>For Change</td>
+                <td id="forSignatures">0</td>
+                <td id="forLastSigned">0 seconds Ago</td>
+                <td id="forSignPerHour">1 p/h</td>
+                <td id="forGovResponse">NO</td>
+            </tr>
+    
+            <tr>
+                <td>Against Change</td>
+                <td id="againstSignatures">0</td>
+                <td id="againstLastSigned">0 seconds Ago</td>
+                <td id="againstSignPerHour">1 p/h</td>
+                <td id="againstGovResponse">NO</td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <span>Auto-updates every 10 seconds.</span>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div style="overflow-x: auto">
+        <div id="what">
+            <div class="title">
+                <span id="showwhat">What!?</span>
+            </div>
+            <div class="content">
+                It has been reported that the Government may amend the Equality Act to "make it clear that sex means biological sex rather than gender." The Government has previously committed to not remove legal protections for trans people, an already marginalised group, but this change would do so.
+                <br>
+                <br>
+                Currently, the Act protects trans people from discrimination on the basis of both sex and “gender reassignment”, regardless of whether they have undergone medical transition or hold a Gender Recognition Certificate. It can allow trans people to access single-sex spaces such as DV shelters, bathrooms and hospital wards.
+                <br>
+                <br>
+                The proposed change would remove a legal protection for trans people and encourage discrimination. We ask the Government to refuse this change to the Equality Act 2010.
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
