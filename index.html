@@ -46,10 +46,16 @@
                     let lastSignedAt = (new Date(data["data"]["attributes"]["updated_at"]));
                     let createdAt = (new Date(data["data"]["attributes"]["created_at"]));
 
-                    let secondsSinceCreation = Math.floor((new Date() - createdAt) / 1000);
-                    let hoursSinceCreation = secondsSinceCreation / 3600;
+                    let lastManualCheckTimestamp = 1669299944;
+                    let lastManualCheckAmount = 37566;
+                    let lastManualCheckAmountDiff = sigCount - lastManualCheckAmount;
 
-                    let signaturesPerHour = Math.round(sigCount / hoursSinceCreation);
+                    let timeStamp = parseInt((new Date()).getTime()/1000);
+                    let timeDiff = timeStamp - lastManualCheckTimestamp;
+
+                    let timeDiffHours = timeDiff / 3600;
+
+                    let signaturesPerHour = Math.round(lastManualCheckAmountDiff / timeDiffHours);
 
                     let govResponseAt = (new Date(data["data"]["attributes"]["government_response_at"]));
                     let govResponded = data["data"]["attributes"]["government_response_at"];
@@ -75,10 +81,16 @@
                     let lastSignedAt = (new Date(data["data"]["attributes"]["updated_at"]));
                     let createdAt = (new Date(data["data"]["attributes"]["created_at"]));
 
-                    let secondsSinceCreation = Math.floor((new Date() - createdAt) / 1000);
-                    let hoursSinceCreation = secondsSinceCreation / 3600;
+                    let lastManualCheckTimestamp = 1669299944;
+                    let lastManualCheckAmount = 6133;
+                    let lastManualCheckAmountDiff = sigCount - lastManualCheckAmount;
 
-                    let signaturesPerHour = Math.round(sigCount / hoursSinceCreation);
+                    let timeStamp = parseInt((new Date()).getTime()/1000);
+                    let timeDiff = timeStamp - lastManualCheckTimestamp;
+
+                    let timeDiffHours = timeDiff / 3600;
+
+                    let signaturesPerHour = Math.round(lastManualCheckAmountDiff / timeDiffHours);
 
                     let govResponseAt = (new Date(data["data"]["attributes"]["government_response_at"]));
                     let govResponded = data["data"]["attributes"]["government_response_at"];
@@ -114,7 +126,6 @@
             /* padding: 1%; */
             margin: 1%;
             background-color: #1d1a1c;
-            /* overflow-wrap:break-word  */
         }
         span, div, p {
             color: white;
@@ -123,6 +134,7 @@
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
         table {
+            /* padding: 5px; */
             background-color: white;
             border: 2px solid #008800;
             border-collapse: collapse;
@@ -157,6 +169,8 @@
             color: white;
             text-shadow: 0px 0px 4px black;
             font-weight: bold;
+            width: min-content;
+            /* table-layout: fixed; */
             border: 2px solid #006600;
         }
         tr:nth-child(even) td:first-child {
@@ -175,7 +189,8 @@
             margin-left: auto;
             margin-right: auto;
             text-align: center;
-            width: 500px;
+            width: 75%;
+            max-width: 500px;
             box-shadow: 0px 0px 6px #ffffff66;
         }
         #what .title {
@@ -197,6 +212,17 @@
             user-select: none;
             cursor: pointer;
         }
+        .tooltip {
+            display: none;
+            position: absolute;
+            border: 2px solid #006600;
+            background-color: #008800;
+            color: white;
+            padding: 5px;
+        }
+        .tooltipPrep:hover + .tooltip {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -205,13 +231,13 @@
     </span>
     <br>
     <br>
-    <div style="overflow-x: auto">
+    <div style="overflow-x: auto; margin-left: 10%; margin-right: 10%">
         <table>
             <tr>
                 <th>Type</th>
                 <th>Signs</th>
                 <th>Last Sign</th>
-                <th>Sign p/h (avg)</th>
+                <th><span class="tooltipPrep" style="cursor:help;">⚠️ </span>Sign p/h<span class="tooltip">Rough Average</span></th>
                 <th>Gov Responded</th>
             </tr>
     
@@ -224,7 +250,7 @@
             </tr>
     
             <tr>
-                <td><a href="https://petition.parliament.uk/petitions/627984">Against Change</a></td>
+                <td><a href="https://petition.parliament.uk/petitions/627984"><span class="tooltipPrep" style="cursor:help;">🏳️‍⚧️ </span>Against Change<span class="tooltip">Going against the change, will protect trans* people</span></a></td>
                 <td id="againstSignatures">0</td>
                 <td id="againstLastSigned">0 seconds Ago</td>
                 <td id="againstSignPerHour">1 p/h</td>
@@ -238,7 +264,7 @@
     <br>
     <br>
     <br>
-    <div style="overflow-x: auto">
+    <div style="overflow-x: auto; margin-left: 5%; margin-right: 5%">
         <div id="what">
             <div class="title">
                 <span id="showwhat">What!?</span>
